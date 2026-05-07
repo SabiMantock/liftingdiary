@@ -10,6 +10,8 @@ Before generating any code, always read the relevant file(s) in the `/docs` dire
 |------|--------|
 | `docs/ui.md` | UI components and date formatting |
 | `docs/data-fetching.md` | Data fetching rules, `/data` helpers, user data isolation |
+| `docs/auth.md` | Authentication provider (Clerk), route protection, auth UI |
+| `docs/data-mutations.md` | Server Actions, `/data` mutation helpers, Zod validation |
 
 ## Commands
 
