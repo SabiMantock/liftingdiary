@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Docs
+
+Before generating any code, always read the relevant file(s) in the `/docs` directory and follow the standards defined there. The docs directory is the source of truth for coding standards in this project.
+
+| File | Covers |
+|------|--------|
+| `docs/ui.md` | UI components and date formatting |
+| `docs/data-fetching.md` | Data fetching rules, `/data` helpers, user data isolation |
+
 ## Commands
 
 ```bash
