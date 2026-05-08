@@ -94,3 +94,15 @@ export async function getWorkoutsForDate(date: Date) {
     exercises: Array.from(w.exercises.values()).sort((a, b) => a.order - b.order),
   }));
 }
+
+export async function createWorkout(name: string, startedAt: Date) {
+  const { userId } = await auth();
+  if (!userId) throw new Error("Unauthenticated");
+
+  const [workout] = await db
+    .insert(workouts)
+    .values({ name, startedAt, userId })
+    .returning({ id: workouts.id });
+
+  return workout;
+}

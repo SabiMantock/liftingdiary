@@ -114,6 +114,45 @@ export default function NewWorkoutPage() {
 }
 ```
 
+## Rule: No `redirect()` in Server Actions
+
+Do NOT call `redirect()` from `next/navigation` inside a Server Action. Instead, return from the action and perform the navigation client-side after the action resolves.
+
+```ts
+// ❌ wrong — redirect inside the server action
+export async function createWorkoutAction(input: CreateWorkoutInput) {
+  const parsed = CreateWorkoutSchema.parse(input);
+  await createWorkout(parsed.name, parsed.date);
+  redirect("/dashboard");
+}
+```
+
+```ts
+// ✅ correct — action just mutates, client handles navigation
+export async function createWorkoutAction(input: CreateWorkoutInput) {
+  const parsed = CreateWorkoutSchema.parse(input);
+  await createWorkout(parsed.name, parsed.date);
+}
+```
+
+```tsx
+// ✅ correct — client component redirects after the action resolves
+"use client";
+
+import { useRouter } from "next/navigation";
+import { createWorkoutAction } from "./actions";
+
+export default function NewWorkoutPage() {
+  const router = useRouter();
+
+  async function handleSubmit() {
+    await createWorkoutAction({ name: "Push Day", date: new Date() });
+    router.push("/dashboard");
+  }
+  // ...
+}
+```
+
 ## Summary
 
 | Concern | Requirement |
@@ -126,3 +165,4 @@ export default function NewWorkoutPage() {
 | Action parameter types | Explicit TypeScript types — no `FormData` |
 | Input validation | Zod on every Server Action |
 | User data isolation | Every mutation must scope writes to the authenticated user ID |
+| Redirects after mutation | Client-side via `router.push()` — never `redirect()` inside a Server Action |
